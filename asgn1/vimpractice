@@ -1,0 +1,36 @@
+Victor Soriano Mendoza 4) Make a copy of this line and put at the top of the file on the line following your name. 
+
+Edit this file using vi or vim, doing all the specified activities (ideally in the easiest way possible) and answering the questions. 
+
+1) Put your name on the first line of the file, followed by a blank line.
+
+
+3) Make 3 copies of this line.
+3) Make 3 copies of this line.
+3) Make 3 copies of this line.
+3) Make 3 copies of this line.
+
+4) Make a copy of this line and put at the top of the file on the line following your name. 
+
+5) Add 5 lines (after this line) containing the text "this is new line number X", replacing X with the numbers 1-5. (copy, paste, then replace text)
+this is new line number 1
+this is new line number 2
+this is new line number 3
+this is new line number 4
+this is new line number 5
+
+6) Join this line and the following together (use J) This line gets joined with the previous.
+
+7) Answer the following 5 questions.  For each, you'll need to save this file, go figure out the answer, then come back here and enter answer on the line following the question. 
+ 
+How many non-hidden files are in /home/ralbers/cs201/a1? 
+	8
+How many hidden files are in /home/ralbers/cs201/a1? 
+	2
+What text is on the last line of the file /home/ralbers/cs201/a1/file2?
+	Do not rile bears.
+What is the largest file in /home/ralbers/cs201/a1?
+	file5
+What file in /home/ralbers/cs201/a1 do you not have permission to read?
+	file6
+

@@ -4,7 +4,6 @@
  * Date: 2019-10-09
  * Title: Assignment 1: Integer Representation
  *************************************************************************/
-#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -76,13 +75,11 @@ void printDatasizes() {
 }
 
 /**
- * Returns a pointer to a character array that holds a nibble respresentation
+ * Alters nibble to a character array that holds a nibble respresentation
  * of parameter hexChar.
  *
  * Input:
  * char hexChar - A hexadecimal character.
- *
- * Return:
  * char* nibble - A pointer to a null terminated character array.
  */
 void hexCharToNibble(char hexChar, char* nibble) {
@@ -143,13 +140,11 @@ void hexCharToNibble(char hexChar, char* nibble) {
 /**
  * Converts a two byte hexadecimal number string to a two byte binary string.
  * This function assumes that the hexadecimal number string is in 0x#### format.
- * In other * words, I'm assuming the hex parameter is a pointing to a character array
- * with a length of HEX_LENGTH.
+ * In other words, I'm assuming the hex parameter is a pointing to a character array
+ * with a length of HEX_LENGTH. The string is stored into the binary parameter.
  *
  * Input:
  * char* hex - Points to HEX_LENGTH character array
- *
- * Returns:
  * char* binary - Points to a BINARY_LENGTH character array
  */
 void hexToBin(char* hex, char* binary) {

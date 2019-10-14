@@ -24,9 +24,12 @@ short nthBit(short, short);
 
 /**
  * Determines whether the machine is little endian or big endian.
+ * Code was taken from lecture notes.
  *
  * Return
  * size_t - 0 if little endian, 1 if big endian.
+ *
+ * Author: Rich Albers
  */
 size_t isBigEndian() {
     unsigned int x=0x12345678;
@@ -84,8 +87,8 @@ void printDatasizes() {
  * 0 - bit unset
  */
 short nthBit(short n, short k) {
-    
-    if (n & (1 << (k - 1))) {
+    short mask = 1 << (k - 1);
+    if (n & mask) {
         return 1;
     } else {
         return 0;
@@ -107,11 +110,11 @@ void printAsBinary(short num, short numBytes) {
     short numBits = BITS_PER_BYTE * numBytes;
     short modEight = 0;
     short modFour = 0;
-    
+
     for (short i = numBits; i; --i) {
         modEight = !(i % 8); // eight bits per byte
         modFour = !(i % 4); // four bits per nibble
-        
+
         if (modEight && i != numBits) { // two spaces between bytes
             printf("  ");
         } else if (modFour && i != numBits) { // one space between nibbles
@@ -131,11 +134,11 @@ void printAsBinary(short num, short numBytes) {
  * short end - value to end at (inclusive)
  */
 void printDataTable(short begin, short end) {
-    puts("Dec\tHex\tBinary");
+    puts("Dec\t Hex\t      Binary");
     for (short i = begin; i <= end; ++i) {
         printf("%d\t%#06hx\t", i, i);
         printAsBinary(i, BYTES_TO_PRINT);
-        puts(""); 
+        puts("");
     }
 }
 

@@ -5,12 +5,11 @@
  * Title: Assignment 1: Integer Representation
  *************************************************************************/
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-const size_t HEX_LENGTH = 7; // length to store hex string
-const size_t BINARY_LENGTH = 20; // length to store binary string
-const size_t NIBBLE_LENGTH = 5; // length to store nibble string
+const size_t BITS_PER_BYTE = 8;
+const size_t BYTES_TO_PRINT = 2;
+const short TABLE_BEGIN = -3;
+const short TABLE_END = 10;
 
 /**
  * Function declarations.
@@ -19,10 +18,9 @@ size_t isBigEndian();
 void printAuthor();
 void printEndian();
 void printDatasizes();
-void printAsBinary(short);
-void printDataTable();
-void hexCharToNibble(char, char*);
-void hexToBin(char*, char*);
+void printAsBinary(short, short);
+void printDataTable(short, short);
+short nthBit(short, short);
 
 /**
  * Determines whether the machine is little endian or big endian.
@@ -75,134 +73,69 @@ void printDatasizes() {
 }
 
 /**
- * Alters nibble to a character array that holds a nibble respresentation
- * of parameter hexChar.
+ * Determines whether or not the kth bit of n is set.
  *
  * Input:
- * char hexChar - A hexadecimal character.
- * char* nibble - A pointer to a null terminated character array.
+ * short n - value
+ * short k - bit being checked
+ *
+ * Return:
+ * 1 - bit set
+ * 0 - bit unset
  */
-void hexCharToNibble(char hexChar, char* nibble) {
-    switch (hexChar) {
-        case '0':
-            strcpy(nibble, "0000\0");
-            break;
-        case '1':
-            strcpy(nibble,"0001\0");
-            break;
-        case '2':
-            strcpy(nibble,"0010\0");
-            break;
-        case '3':
-            strcpy(nibble,"0011\0");
-            break;
-        case '4':
-            strcpy(nibble,"0100\0");
-            break;
-        case '5':
-            strcpy(nibble,"0101\0");
-            break;
-        case '6':
-            strcpy(nibble,"0110\0");
-            break;
-        case '7':
-            strcpy(nibble,"0111\0");
-            break;
-        case '8':
-            strcpy(nibble,"1000\0");
-            break;
-        case '9':
-            strcpy(nibble,"1001\0");
-            break;
-        case 'a':
-            strcpy(nibble,"1010\0");
-            break;
-        case 'b':
-            strcpy(nibble,"1011\0");
-            break;
-        case 'c':
-            strcpy(nibble,"1100\0");
-        case 'd':
-            strcpy(nibble,"1101\0");
-            break;
-        case 'e':
-            strcpy(nibble,"1110\0");
-            break;
-        case 'f':
-            strcpy(nibble,"1111\0");
-            break;
-        default:
-            strcpy(nibble,"err.\0");
-            break;
+short nthBit(short n, short k) {
+    
+    if (n & (1 << (k - 1))) {
+        return 1;
+    } else {
+        return 0;
     }
 }
 
 /**
- * Converts a two byte hexadecimal number string to a two byte binary string.
- * This function assumes that the hexadecimal number string is in 0x#### format.
- * In other words, I'm assuming the hex parameter is a pointing to a character array
- * with a length of HEX_LENGTH. The string is stored into the binary parameter.
+ * Prints a short in a n-byte binary representation.
  *
  * Input:
- * char* hex - Points to HEX_LENGTH character array
- * char* binary - Points to a BINARY_LENGTH character array
- */
-void hexToBin(char* hex, char* binary) {
-    char* nibble = malloc(NIBBLE_LENGTH);
-    char b[BINARY_LENGTH];
-    size_t printedNibbles = 0;
-    size_t binIndex = 0; // will keep track of our position in binary.
-
-    // start at 2 to ignore "0x" in string.
-    for (size_t i = 2; i < HEX_LENGTH - 1; ++i) {
-        hexCharToNibble(hex[i], nibble);
-
-        for (size_t j = 0; j < NIBBLE_LENGTH - 1; ++j) {
-            b[binIndex++] = nibble[j];
-        }
-        printedNibbles++;
-
-        if (printedNibbles == 1) { // add a space in between nibbles
-            b[binIndex++] = ' ';
-        } else if (printedNibbles == 2) { // add two spaces in between bytes
-            b[binIndex++] = ' ';
-            b[binIndex++] = ' ';
-            printedNibbles = 0;
-        }
-    }
-    free(nibble);
-    b[binIndex] = '\0';
-    strcpy(binary, b);
-}
-
-/**
- * Prints numToPrint as a two byte binary string.
- *
- * Input:
- * short numToPrint - number to convert.
+ * num - value to print
+ * numBytes - how many bytes to print
  *
  * Output:
- * prints Two byte binary representation.
+ * Prints binary representation with two spaces between bytes
+ * and one space between nibbles.
  */
-void printAsBinary(short numToPrint) {
-    char* hex = malloc(HEX_LENGTH);
-    char* binary = malloc(BINARY_LENGTH);
-    sprintf(hex, "%#06hx", numToPrint);
-    hexToBin(hex, binary);
-    printf("%s\n", binary);
-    free(hex);
-    free(binary);
+void printAsBinary(short num, short numBytes) {
+    short numBits = BITS_PER_BYTE * numBytes;
+    short modEight = 0;
+    short modFour = 0;
+    
+    for (short i = numBits; i; --i) {
+        modEight = !(i % 8); // eight bits per byte
+        modFour = !(i % 4); // four bits per nibble
+        
+        if (modEight && i != numBits) { // two spaces between bytes
+            printf("  ");
+        } else if (modFour && i != numBits) { // one space between nibbles
+            printf(" ");
+        }
+            printf("%d", nthBit(num, i));
+    }
 }
 
 /**
- * Prints a table from -3 to 10 with decimal, hexadecimal, and binary
+ * Print tab delimited table from begin to end
+ * of integers with decimal, hexadecimal, and binary
  * representations.
+ *
+ * Input:
+ * short begin - value to start at
+ * short end - value to end at (inclusive)
  */
-void printDataTable() {
+void printDataTable(short begin, short end) {
     puts("Dec\tHex\tBinary");
-    for (short i = -3; i < 11; ++i) {
+    for (short i = begin; i <= end; ++i) {
         printf("%d\t%#06hx\t", i, i);
-        printAsBinary(i);
+        printAsBinary(i, BYTES_TO_PRINT);
+        puts(""); 
     }
 }
 
@@ -213,7 +146,7 @@ int main(void) {
     puts("");
     printDatasizes();
     puts("");
-    printDataTable();
+    printDataTable(TABLE_BEGIN, TABLE_END);
 
     return 0;
 }

@@ -1,3 +1,9 @@
+/**************************************************************************
+ * Author: Victor Soriano Mendoza
+ * Instructor: Rich Albers
+ * Date: 2019-10-18
+ * Title: Assignment 2a: Floating Point Dissection
+ *************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 

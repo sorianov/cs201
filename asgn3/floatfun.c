@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+const int SIGN_BIT = 31;
 const int EXP_START_BIT = 30;
 const int EXP_END_BIT = 23;
 const int FRAC_START_BIT = 22;
@@ -89,13 +90,13 @@ void printAsBinary(int num, int numBits) {
  * num - the int representation in the union
  *
  * Output:
- * The decimal, hexadecimal, and binary representation of bit 31.
+ * The decimal, hexadecimal, and binary representation of SIGN BIT.
  */
 void printSignBit(int num) {
-    int signBit = nthBit(num, 31);
-    printf("Sign:          %d       0x%x   %d", 
-        signBit, 
-        signBit, 
+    int signBit = nthBit(num, SIGN_BIT);
+    printf("Sign:          %d       0x%x   %d",
+        signBit,
+        signBit,
         signBit);
     puts("");
 }

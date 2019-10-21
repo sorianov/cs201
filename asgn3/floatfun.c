@@ -19,10 +19,11 @@ union floatInt {
 };
 
 /** Function declarations **/
-void printFractionalBits(int num);
-void printExpBits(int num);
-void printSignBit(int num);
-void printAsBinary(int num, int numBits);
+void printFloatInfo(union floatInt);
+void printFractionalBits(int);
+void printExpBits(int);
+void printSignBit(int);
+void printAsBinary(int, int);
 void printAuthor();
 /**************************/
 
@@ -168,6 +169,13 @@ void printFractionalBits(int num) {
 
 }
 
+void printFloatInfo(union floatInt fInt) {
+    printf("Float val:   %f\n", fInt.f);
+    printf("In hex:      %#0x\n", fInt.i);
+    printf("In binary:   ");
+    printAsBinary(fInt.i, 32); // print 4 bytes
+}
+
 int main(int argc, char* argv[]) {
 
     // Verify we recieved the correct amount of arguments
@@ -177,17 +185,15 @@ int main(int argc, char* argv[]) {
 
     union floatInt fInt = { .f = atof(argv[1]) };
 
-    printAuthor(); puts(""); printf("Float val:   %f\n", fInt.f);
-    printf("In hex:      %#0x\n", fInt.i);
-    printf("In binary:   ");
-    printAsBinary(fInt.i, 4);
+    printAuthor();
+    puts("");
+    printFloatInfo(fInt);
     puts("\n");
     printSignBit(fInt.i);
     printExpBits(fInt.i);
     puts("\n");
     printFractionalBits(fInt.i);
     puts("\n");
-
 
     return 0;
 }

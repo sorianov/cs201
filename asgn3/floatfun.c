@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const int BITS_PER_BYTE = 8;
 const int EXP_START_BIT = 30;
 const int EXP_END_BIT = 23;
 const int FRAC_START_BIT = 22;

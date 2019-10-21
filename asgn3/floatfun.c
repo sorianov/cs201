@@ -139,7 +139,7 @@ void printExpBits(int num) {
         --bit;
     }
     printf("Exp bits:    %d      %#x   ", dec, dec);
-    printAsBinary(dec, 8);
+    printAsBinary(dec, 8); // print a byte
 }
 
 /**
@@ -164,7 +164,7 @@ void printFractionalBits(int num) {
     } else {
         printf("Fraction:    %d     %#05x   ", dec, dec);
     }
-    printAsBinary(dec, 19);
+    printAsBinary(dec, 19); // print 19 bits
 
 }
 

@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const int SIGN_BIT = 31;
+const int SIGN_BIT = 32;
 const int EXP_START_BIT = 30;
 const int EXP_END_BIT = 23;
 const int FRAC_START_BIT = 22;
@@ -15,7 +15,7 @@ const int FRAC_END_BIT = 0;
 
 union floatInt {
     float f;
-    int i;
+    unsigned int i;
 };
 
 /** Function declarations **/

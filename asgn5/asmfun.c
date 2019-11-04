@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 const int INT_REGISTER_LENGTH = 4; // bytes
-const double RADIUS = 4.5
+const double RADIUS = 4.5;
 
 double sphereVolume(const double radius) {
     double volume;
@@ -61,8 +61,8 @@ void printCpuVendorID() {
             "   movl    %%ecx,  %[c]    \n"     // third part of vendor id
 
             :   [b]         "=m"        (b),    // outputs
-                [d]         "=m"        (d)
-                [c]         "=m"        (c),
+                [d]         "=m"        (d),
+                [c]         "=m"        (c)
             :                                   // inputs
 
             :   "eax", "ebx", "ecx", "edx"      // clobbers

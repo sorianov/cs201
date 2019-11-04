@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 const int INT_REGISTER_LENGTH = 4; // bytes
+const double RADIUS = 4.5
 
 double sphereVolume(const double radius) {
     double volume;
@@ -28,7 +29,8 @@ double sphereVolume(const double radius) {
             [radius]    "m"     (radius)
 
         :   "st"                            // clobbers. Just in case this
-                                            // was already in use.
+                                            // was already in use. Top of fp
+                                            // stack.
     );
 
     return volume;
@@ -45,9 +47,9 @@ void printBytesAscii(int r, int numBytes) {
 }
 
 void printCpuVendorID() {
-    int b; // ebx
-    int c; // ecx
-    int d; // edx
+    int b;
+    int c;
+    int d;
 
     asm(
             "   mov     $0,     %%eax   \n"     // Make %eax 0 so we get
@@ -59,8 +61,8 @@ void printCpuVendorID() {
             "   movl    %%ecx,  %[c]    \n"     // third part of vendor id
 
             :   [b]         "=m"        (b),    // outputs
-                [c]         "=m"        (c),
                 [d]         "=m"        (d)
+                [c]         "=m"        (c),
             :                                   // inputs
 
             :   "eax", "ebx", "ecx", "edx"      // clobbers
@@ -73,8 +75,10 @@ void printCpuVendorID() {
 }
 
 int main(void) {
-    double r = 4.5;
-    printf("Volume of sphere with radius %.3f: %.3f\n", r, sphereVolume(r));
+    printf("Volume of sphere with radius %.3f: %.3f\n",
+        RADIUS,
+        sphereVolume(RADIUS)
+    );
     printCpuVendorID();
 
     return 0;

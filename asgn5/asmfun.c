@@ -176,6 +176,10 @@ double quadraticFormula(double a, double b, double c) {
 }
 
 int main(void) {
+    const double a = 3.0;
+    const double b = 10.0;
+    const double c = -3.0;
+
     printAuthor();
 
     printf("Volume of sphere with radius %.3f: %.3f\n\n",
@@ -186,7 +190,16 @@ int main(void) {
     printCpuVendorID();
     puts("");
 
-    printf("Quadratic(+): %.3f\n", quadraticFormula(3, 10, -3));
+    printf("Quadratic(+) for:\n\t"
+           "a = %.3f\n\t"
+           "b = %.3f\n\t"
+           "c = %.3f\n\t"
+           "= %.3f\n",
+        a,
+        b,
+        c,
+        quadraticFormula(a, b, c)
+    );
 
     return 0;
 }

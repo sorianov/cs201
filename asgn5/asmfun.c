@@ -117,6 +117,64 @@ void printCpuVendorID() {
     puts("");
 }
 
+/**
+ * Calculates the positive root of a function given variables
+ * a, b, and c by using the quadratic formula.
+ *
+ * Inputs:
+ * double a - Quadratic argument a
+ * double b - Quadratic argument b
+ * double c - Quadratic argument c
+ *
+ * Return:
+ * double posRoot - The positive root result from feeding
+ *                  a, b, and c into the quadratic formula.
+ */
+double quadraticFormula(double a, double b, double c) {
+    double posRoot;
+    const double four = 4.0;
+    double negB = -b;
+
+    // In the comments, the " character has been used to substitute
+    // the result from the above line. This was done to keep lines within
+    // a width of 80 characters.
+    asm(
+            "   fld1                    \n  "       // load 1
+            "   fld1                    \n  "       // load 1
+            "   faddp                   \n  "       // 1 + 1
+            "   fldl        %[a]        \n  "       // load a
+            "   fmulp                   \n  "       // 2 * a
+            "   fldl        %[negB]     \n  "       // load -b
+            "   fldl        %[four]     \n  "       // load 4.0
+            "   fldl        %[a]        \n  "       // load a
+            "   fldl        %[c]        \n  "       // load c
+            "   fmulp                   \n  "       // a * c
+            "   fmulp                   \n  "       // 4 * (a * c)
+            "   fldl        %[b]        \n  "       // load b
+            "   fldl        %[b]        \n  "
+            "   fmulp                   \n  "       // b^2
+            "   fsubp                   \n  "       // " - (4 * (a * c))
+            "   fsqrt                   \n  "       // sqrt(")
+            "   faddp                   \n  "       // -b + "
+            "   fdivp                   \n  "       // " / (2 * a)
+            "   fstpl       %[posRoot]  \n  "       // store into posRoot
+
+            :   [posRoot]   "=m"        (posRoot)   // output
+
+            :   [a]         "m"         (a),        // inputs
+                [b]         "m"         (b),
+                [c]         "m"         (c),
+                [four]      "m"         (four),
+                [negB]      "m"         (negB)
+
+            :   "st"                                // clobbers
+
+
+       );
+
+    return posRoot;
+}
+
 int main(void) {
     printAuthor();
 
@@ -127,6 +185,8 @@ int main(void) {
 
     printCpuVendorID();
     puts("");
+
+    printf("Quadratic(+): %.3f\n", quadraticFormula(3, 10, -3));
 
     return 0;
 }

@@ -1,8 +1,30 @@
+/**************************************************************************
+ * Author: Victor Soriano Mendoza
+ * Instructor: Rich Albers
+ * Date: 2019-11-04
+ * Title: Assignment 5: Embedded Assembly
+ *************************************************************************/
 #include <stdio.h>
 
 const int INT_REGISTER_LENGTH = 4; // bytes
 const double RADIUS = 4.5;
 
+/**
+ * Prints the name of the author of this code.
+ */
+void printAuthor() {
+    puts("Author: Victor Soriano Mendoza\n");
+}
+
+/**
+ * Calculates the volume of a sphere with a given radius.
+ *
+ * Input:
+ * const double radius - The radius to be used in the calculation
+ *
+ * Return:
+ * double volume - The calculated volume of the sphere
+ */
 double sphereVolume(const double radius) {
     double volume;
     const double four = 4.0;
@@ -36,6 +58,17 @@ double sphereVolume(const double radius) {
     return volume;
 }
 
+/**
+ *  Given an integer value r, prints the ascii representation of every
+ *  byte for numBytes.
+ *
+ *  Inputs:
+ *  int r - The value holding the bytes to be printed
+ *  int numBytes - The number of bytes to print of the value r
+ *
+ *  Outputs:
+ *  Prints ascii representation of every byte of r for numBytes.
+ */
 void printBytesAscii(int r, int numBytes) {
     char* c;
 
@@ -46,6 +79,13 @@ void printBytesAscii(int r, int numBytes) {
     }
 }
 
+/**
+ * Prints the VendorID of the CPU.
+ *
+ * Outputs:
+ * The 12-character VendorId string is printed to the console,
+ * along with a newline.
+ */
 void printCpuVendorID() {
     int b;
     int c;
@@ -68,6 +108,8 @@ void printCpuVendorID() {
             :   "eax", "ebx", "ecx", "edx"      // clobbers
         );
 
+    // Each register holds 4 characters. VendorIds
+    // are 12 characters.
     printBytesAscii(b, INT_REGISTER_LENGTH);
     printBytesAscii(d, INT_REGISTER_LENGTH);
     printBytesAscii(c, INT_REGISTER_LENGTH);
@@ -75,7 +117,8 @@ void printCpuVendorID() {
 }
 
 int main(void) {
-    printf("Volume of sphere with radius %.3f: %.3f\n",
+    printAuthor();
+    printf("Volume of sphere with radius %.3f: %.3f\n\n",
         RADIUS,
         sphereVolume(RADIUS)
     );

@@ -108,6 +108,7 @@ void printCpuVendorID() {
             :   "eax", "ebx", "ecx", "edx"      // clobbers
         );
 
+    printf("VendorID: ");
     // Each register holds 4 characters. VendorIds
     // are 12 characters.
     printBytesAscii(b, INT_REGISTER_LENGTH);
@@ -118,11 +119,14 @@ void printCpuVendorID() {
 
 int main(void) {
     printAuthor();
+
     printf("Volume of sphere with radius %.3f: %.3f\n\n",
         RADIUS,
         sphereVolume(RADIUS)
     );
+
     printCpuVendorID();
+    puts("");
 
     return 0;
 }

@@ -117,6 +117,9 @@ void printCpuVendorID() {
     puts("");
 }
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 /**
  * Calculates the positive root of a function given variables
  * a, b, and c by using the quadratic formula.
@@ -173,8 +176,28 @@ double quadraticFormula(double a, double b, double c) {
        );
 
     return posRoot;
+=======
+=======
+>>>>>>> Stashed changes
+void quadraticFormula(double a, double b, double c) {
+    asm(
+            "
+       )
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 }
 
+||||||| merged common ancestors
+=======
+void quadraticFormula(double a, double b, double c) {
+    asm(
+            "
+       )
+}
+
+>>>>>>> Stashed changes
 int main(void) {
     const double a = 3.0;
     const double b = 10.0;
@@ -188,6 +211,9 @@ int main(void) {
     );
 
     printCpuVendorID();
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     puts("");
 
     printf("Quadratic(+) for:\n\t"
@@ -200,6 +226,19 @@ int main(void) {
         c,
         quadraticFormula(a, b, c)
     );
+=======
+    double quad = quadraticFormula(3, 10, -3);
+    printf("Quadratic formula: %.3f", quad);
+>>>>>>> Stashed changes
+=======
+    double quad = quadraticFormula(3, 10, -3);
+    printf("Quadratic formula: %.3f", quad);
+>>>>>>> Stashed changes
+||||||| merged common ancestors
+=======
+    double quad = quadraticFormula(3, 10, -3);
+    printf("Quadratic formula: %.3f", quad);
+>>>>>>> Stashed changes
 
     return 0;
 }

@@ -125,6 +125,13 @@ char* decryptFile(char* buffer, size_t size) {
     return newBuffer;
 }
 
+/**
+ * Prints the name of the author of this code.
+ */
+void printAuthor() {
+    puts("Author: Victor Soriano Mendoza");
+}
+
 int main(int argc, char* argv[]) {
     char* programName = argv[0];
     char* outFilenameExtension = ".d\0";
@@ -137,6 +144,7 @@ int main(int argc, char* argv[]) {
     size_t inFilenameLength = 0;
     size_t outFilenameLength = 0;
     size_t result = 0;
+    size_t written = 0;
 
     // Check that we have an input file
     if (argc != MIN_ARGUMENTS) {
@@ -192,7 +200,17 @@ int main(int argc, char* argv[]) {
     newBuffer = decryptFile(buffer, result);
 
     // Write decrypted buffer to output file
-    fwrite((void *)newBuffer, sizeof(char), result, pFile);
+    written = fwrite((void *)newBuffer, sizeof(char), result, pFile);
+
+    printAuthor();
+    printf("Input file: %s\n", inFilename);
+    printf("File Size: %d bytes\n", result);
+    printf("Output file: %s\n", outFilename);
+    if (written == result) {
+        printf("Decryption Successful! Output file created.\n");
+    } else {
+        printf("Decryption Unsuccessful! File size mismatch.\n");
+    }
 
     // Cleanup
     fclose(pFile);

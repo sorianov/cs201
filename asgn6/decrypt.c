@@ -1,17 +1,27 @@
-/*****************************************************************************
- * Author: Victor Soriano Mendoza
- * Instructor: Rich Albers
- * Date: 2019-11-10
- * Title: Assignment 6: Dynamic Memory Allocation, File I/O, and 
- *                      Bit Manipulation
- *****************************************************************************/
+//----------------------------------------------------------------------------
+// Author: Victor Soriano Mendoza
+// Instructor: Rich Albers
+// Date: 2019-11-10
+// Title: Assignment 6: Dynamic Memory Allocation, File I/O, and
+//                      Bit Manipulation
+//----------------------------------------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
 
 const size_t EXTENSION_LENGTH = 3;
 const size_t MIN_ARGUMENTS = 2;
 
+/**
+ * Calculates the length of a character array
+ *
+ * Input:
+ * char* str - Pointer to the character array
+ *
+ * Return:
+ * size_t i - Length of the character array
+ */
 size_t strLength(char* str) {
     size_t i = 0;
     while(str[i] != '\0') {
@@ -20,6 +30,20 @@ size_t strLength(char* str) {
     return i;
 }
 
+/**
+ * Concatenates an extension of characters to a character array.
+ *
+ * Input:
+ * char* inFile - The original character array
+ * char* outFile - The character array that will hold the original array
+ *                 and the extension.
+ * char* extension - A character array holding characters to be added. It
+ *                   assumed the extension has a length of EXTENSION_LENGTH.
+ * size_t inLength - The length of the original array
+ *
+ * Output:
+ * None. The outFile array will be modified in place.
+ */
 void addExtension(char* inFile, char* outFile, char* extension,
         size_t inLength) {
 
@@ -35,14 +59,44 @@ void addExtension(char* inFile, char* outFile, char* extension,
 
 }
 
+/**
+ * Swaps the nibbles of byte. It is assumed that the char type is a byte.
+ *
+ * Input:
+ * char byte - The byte that will have its nibbles swapped.
+ *
+ * Return:
+ * char - A byte with the nibbles swapped.
+ */
 char swapNibbles(char byte) {
     return (byte & 0x0f) << 4 | (byte & 0xf0) >> 4;
 }
 
+/**
+ * Flips all the bits in a byte. Assumes the char type is a byte.
+ *
+ * Input:
+ * char byte - The byte that will have its bits flipped.
+ *
+ * Return:
+ * char - A byte with its bits flipped.
+ */
 char flipBits(char byte) {
     return ~byte;
 }
 
+/**
+ * Takes a character array and for every even byte will flip
+ * the byte's bits, and will swap the nibbles of every odd byte.
+ *
+ * Input:
+ * char* buffer - The character array to decrypt
+ * size_t size - The size of buffer
+ *
+ * Return:
+ * char* newBuffer - The buffer that holds the decrypted contents
+ *                   of buffer.
+ */
 char* decryptFile(char* buffer, size_t size) {
     size_t i = 0;
     char c;

@@ -13,6 +13,13 @@
 const size_t EXTENSION_LENGTH = 3;
 const size_t MIN_ARGUMENTS = 2;
 
+// Function declarations
+size_t strLength(char*);
+void addExtension(char*, char*, char*, size_t);
+char swapNibbles(char);
+char flipBits(char);
+char* decryptFile(char*, size_t);
+
 /**
  * Calculates the length of a character array
  *

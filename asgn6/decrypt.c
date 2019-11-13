@@ -125,6 +125,18 @@ char* decryptFile(char* buffer, size_t size) {
     return newBuffer;
 }
 
+/**
+ * Adds a ".d" extension to a character array.
+ *
+ * Input:
+ * char* inFilename - The original character array.
+ * char** outFilename - A copy of the original character array + the
+ *                      ".d" extension.
+ *
+ * Return:
+ * None - outFilename is assigned to the address of a dynamically allocated
+ *        memory block that holds the character array.
+ */
 void createOutFilename(char* inFilename, char** outFilename) {
     char* oFilename = NULL;
     char* oFilenameExtension = ".d\0";

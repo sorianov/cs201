@@ -152,6 +152,17 @@ void createOutFilename(char* inFilename, char** outFilename) {
     *outFilename = oFilename;
 }
 
+/**
+ * Reads the contents of a file into a buffer.
+ *
+ * Input:
+ * char** buffer - A pointer pointing to a character pointer that will
+ *                 store the file's contents.
+ * char* inFilename - The name of the file to be read.
+ *
+ * Return:
+ * size_t result - The number of bytes read in from inFilename.
+ */
 size_t readIntoBuffer(char** buffer, char* inFilename) {
     FILE* pFile = NULL;
     long lSize = 0;
@@ -195,6 +206,18 @@ void printAuthor() {
     puts("Author: Victor Soriano Mendoza");
 }
 
+/**
+ * Decrypts a buffer and stores the decrypted data to a file named
+ * outFilename.
+ *
+ * Input:
+ * char* buffer - Buffer to be decrypted.
+ * char* outFilname - Filename where data should be written to.
+ * size_t bufSize - The size of buffer.
+ *
+ * Return:
+ * size_t written - The number of bytes written to outFilename.
+ */
 size_t decryptToFile(char* buffer, char* outFilename, size_t bufSize) {
     char* decrypted = NULL;
     FILE* pFile;
@@ -215,6 +238,36 @@ size_t decryptToFile(char* buffer, char* outFilename, size_t bufSize) {
     fclose(pFile);
     free(decrypted);
     return written;
+}
+
+/**
+ * Prints output that follows assignment guidelines.
+ *
+ * Inputs:
+ * char* inFilename - Filename passed as argument.
+ * size_t read - Number of bytes read in from inFilename.
+ * char* outFilename - Name of the file being written to.
+ * size_t written - Number of bytes written to outFilename.
+ *
+ * Example Output:
+ *   Author: Victor Soriano Mendoza
+ *   Input file: data.dat
+ *   File Size: 28 bytes
+ *   Output file: data.dat.d
+ *   Decryption Successful! Output file created.
+ */
+void printAssignmentOutput(char* inFilename, size_t read, char* outFilename,
+        size_t written) {
+
+    printAuthor();
+    printf("Input file: %s\n", inFilename);
+    printf("File Size: %zu bytes\n", read);
+    printf("Output file: %s\n", outFilename);
+    if (written == read) {
+        printf("Decryption Successful! Output file created.\n");
+    } else {
+        printf("Decryption Unsuccessful! File size mismatch.\n");
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -240,15 +293,8 @@ int main(int argc, char* argv[]) {
     // Decrypt and write to file
     written = decryptToFile(buffer, outFilename, result);
 
-    printAuthor();
-    printf("Input file: %s\n", inFilename);
-    printf("File Size: %zu bytes\n", result);
-    printf("Output file: %s\n", outFilename);
-    if (written == result) {
-        printf("Decryption Successful! Output file created.\n");
-    } else {
-        printf("Decryption Unsuccessful! File size mismatch.\n");
-    }
+    // Print output according to assignment.
+    printAssignmentOutput(inFilename, result, outFilename, written);
 
     // Cleanup
     free(buffer);

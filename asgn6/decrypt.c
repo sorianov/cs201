@@ -125,17 +125,157 @@ char* decryptFile(char* buffer, size_t size) {
     return newBuffer;
 }
 
+/**
+ * Adds a ".d" extension to a character array.
+ *
+ * Input:
+ * char* inFilename - The original character array.
+ * char** outFilename - A copy of the original character array + the
+ *                      ".d" extension.
+ *
+ * Return:
+ * None - outFilename is assigned to the address of a dynamically allocated
+ *        memory block that holds the character array.
+ */
+void createOutFilename(char* inFilename, char** outFilename) {
+    char* oFilename = NULL;
+    char* oFilenameExtension = ".d\0";
+    size_t inFilenameLength = 0;
+    size_t oFilenameLength = 0;
+
+    inFilenameLength = strLength(inFilename);
+    oFilenameLength = inFilenameLength + EXTENSION_LENGTH;
+    oFilename = (char*) malloc(sizeof(char) * oFilenameLength);
+    addExtension(inFilename, oFilename, oFilenameExtension,
+                inFilenameLength);
+
+    *outFilename = oFilename;
+}
+
+/**
+ * Reads the contents of a file into a buffer.
+ *
+ * Input:
+ * char** buffer - A pointer pointing to a character pointer that will
+ *                 store the file's contents.
+ * char* inFilename - The name of the file to be read.
+ *
+ * Return:
+ * size_t result - The number of bytes read in from inFilename.
+ */
+size_t readIntoBuffer(char** buffer, char* inFilename) {
+    FILE* pFile = NULL;
+    long lSize = 0;
+    size_t result = 0;
+
+    // Open input file for reading
+    pFile = fopen(inFilename, "rb");
+    if (pFile == NULL) {
+        fputs("Could not open file for reading\n", stderr);
+        exit(EXIT_FAILURE);
+    }
+
+    // Calculate input file size
+    fseek(pFile, 0, SEEK_END);
+    lSize = ftell(pFile);
+    rewind(pFile);
+
+    // Create buffer to hold input file contents
+    *buffer = (char*) malloc(sizeof(char) * lSize);
+    if (*buffer == NULL) {
+        fputs("Could not allocate memory to file buffer.\n", stderr);
+        exit(EXIT_FAILURE);
+    }
+
+    // Copy input file contents into buffer
+    result = fread(*buffer, 1, lSize, pFile);
+    fclose(pFile);
+    pFile = NULL;
+    if (result != lSize) {
+        fputs("Error reading file into buffer.\n", stderr);
+        exit(EXIT_FAILURE);
+    }
+
+    return result;
+}
+
+/**
+ * Prints the name of the author of this code.
+ */
+void printAuthor() {
+    puts("Author: Victor Soriano Mendoza");
+}
+
+/**
+ * Decrypts a buffer and stores the decrypted data to a file named
+ * outFilename.
+ *
+ * Input:
+ * char* buffer - Buffer to be decrypted.
+ * char* outFilname - Filename where data should be written to.
+ * size_t bufSize - The size of buffer.
+ *
+ * Return:
+ * size_t written - The number of bytes written to outFilename.
+ */
+size_t decryptToFile(char* buffer, char* outFilename, size_t bufSize) {
+    char* decrypted = NULL;
+    FILE* pFile;
+    size_t written = 0;
+
+    // Open output file for writing
+    pFile = fopen(outFilename, "wb");
+    if (pFile == NULL) {
+        fputs("Could not open file for writing.\n", stderr);
+        return EXIT_FAILURE;
+    }
+
+    // Decrypt buffer contents and place it into new buffer
+    decrypted = decryptFile(buffer, bufSize);
+
+    // Write decrypted buffer to output file
+    written = fwrite((void *)decrypted, sizeof(char), bufSize, pFile);
+    fclose(pFile);
+    free(decrypted);
+    return written;
+}
+
+/**
+ * Prints output that follows assignment guidelines.
+ *
+ * Inputs:
+ * char* inFilename - Filename passed as argument.
+ * size_t read - Number of bytes read in from inFilename.
+ * char* outFilename - Name of the file being written to.
+ * size_t written - Number of bytes written to outFilename.
+ *
+ * Example Output:
+ *   Author: Victor Soriano Mendoza
+ *   Input file: data.dat
+ *   File Size: 28 bytes
+ *   Output file: data.dat.d
+ *   Decryption Successful! Output file created.
+ */
+void printAssignmentOutput(char* inFilename, size_t read, char* outFilename,
+        size_t written) {
+
+    printAuthor();
+    printf("Input file: %s\n", inFilename);
+    printf("File Size: %zu bytes\n", read);
+    printf("Output file: %s\n", outFilename);
+    if (written == read) {
+        printf("Decryption Successful! Output file created.\n");
+    } else {
+        printf("Decryption Unsuccessful! File size mismatch.\n");
+    }
+}
+
 int main(int argc, char* argv[]) {
     char* programName = argv[0];
-    char* outFilenameExtension = ".d\0";
     char* inFilename = NULL;
     char* outFilename = NULL;
     char* buffer = NULL;
-    char* newBuffer = NULL;
-    FILE* pFile = NULL;
-    long lSize = 0;
-    size_t inFilenameLength = 0;
-    size_t outFilenameLength = 0;
+    size_t written = 0;
     size_t result = 0;
 
     // Check that we have an input file
@@ -147,57 +287,17 @@ int main(int argc, char* argv[]) {
 
     // Create output filename
     inFilename = argv[1];
-    inFilenameLength = strLength(inFilename);
-    outFilenameLength = inFilenameLength + EXTENSION_LENGTH;
-    outFilename = (char*) malloc(sizeof(char) * outFilenameLength);
-    addExtension(inFilename, outFilename, outFilenameExtension,
-                inFilenameLength);
+    createOutFilename(inFilename, &outFilename);
+    result = readIntoBuffer(&buffer, inFilename);
 
-    // Open input file for reading
-    pFile = fopen(inFilename, "rb");
-    if (pFile == NULL) {
-        fputs("Could not open file for writing", stderr);
-        return EXIT_FAILURE;
-    }
+    // Decrypt and write to file
+    written = decryptToFile(buffer, outFilename, result);
 
-    // Calculate input file size
-    fseek(pFile, 0, SEEK_END);
-    lSize = ftell(pFile);
-    rewind(pFile);
-
-    // Create buffer to hold input file contents
-    buffer = (char*) malloc(sizeof(char) * lSize);
-    if (buffer == NULL) {
-        fputs("Could not allocate memory to file buffer.", stderr);
-        return EXIT_FAILURE;
-    }
-
-    // Copy input file contents into buffer
-    result = fread(buffer, 1, lSize, pFile);
-    fclose(pFile);
-    pFile = NULL;
-    if (result != lSize) {
-        fputs("Error reading file into buffer.", stderr);
-        return EXIT_FAILURE;
-    }
-
-    // Open output file for writing
-    pFile = fopen(outFilename, "wb");
-    if (pFile == NULL) {
-        fputs("Could not open file for writing", stderr);
-        return EXIT_FAILURE;
-    }
-
-    // Decrypt buffer contents and place it into new buffer
-    newBuffer = decryptFile(buffer, result);
-
-    // Write decrypted buffer to output file
-    fwrite((void *)newBuffer, sizeof(char), result, pFile);
+    // Print output according to assignment.
+    printAssignmentOutput(inFilename, result, outFilename, written);
 
     // Cleanup
-    fclose(pFile);
     free(buffer);
-    free(newBuffer);
     free(outFilename);
     return EXIT_SUCCESS;
 }

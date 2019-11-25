@@ -3,10 +3,10 @@
  Name: sumArray.c
  Desc: Assignment 7 - Sums up array elements numerous times
 
-	Students will modify sumArray routine to improve 
+	Students will modify sumArray routine to improve
 	performance.
 
- Compile 
+ Compile
 	gcc -m32 -std=gnu99 -Wall -g sumArray.c -o sumArray
 
  Time execution:
@@ -24,10 +24,9 @@
 double sumArray(double a[]) {
     register int size = ARR_SIZE;
     register double sum = 0;
-for (register int i = 0; i < size; i+=20) {
-sum += a[i]+a[i+1]+a[i+2]+a[i+3]+a[i+4]+a[i+5]+a[i+6]+a[i+7]+a[i+8]+a[i+9];
-sum += a[i+10]+a[i+11]+a[i+12]+a[i+13]+a[i+14]+a[i+15]+a[i+16]+a[i+17]+a[i+18]+a[i+19];
-}
+    for (register int i = 0; i < size; i+=2) {
+        sum += a[i] + a[i+1];
+    }
     return sum;
 }
 

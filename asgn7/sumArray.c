@@ -22,12 +22,18 @@
 #define ARR_SIZE  100000
 
 double sumArray(double a[]) {
-    register int size = ARR_SIZE;
     register double sum = 0;
-    for (register int i = 0; i < size; i+=2) {
-        sum += a[i] + a[i+1];
+    register double sum2 = 0;
+    const int limit = ARR_SIZE - 1;
+    register int i;
+    for (i = 0; i < limit; i+=2) {
+        sum += a[i];
+        sum2 += a[i+1];
     }
-    return sum;
+    for (;i < ARR_SIZE;++i) {
+        sum += a[i];
+    }
+    return sum + sum2;
 }
 
 int main() {

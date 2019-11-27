@@ -24,20 +24,16 @@
 double sumArray(double a[]) {
     register double sum = 0;
     register double sum2 = 0;
-    register double sum3 = 0;
-    register double sum4 = 0;
-    register const size_t limit = ARR_SIZE - 3;
+    register const size_t limit = ARR_SIZE - 1;
     register size_t i;
-    for (i = 0; i < limit; i+=4) {
-        sum += a[i];
-        sum2 += a[i+1];
-        sum3 += a[i+2];
-        sum4 += a[i+3];
+    for (i = 0; i < limit; i+=2) {
+        sum = sum + a[i];
+        sum2 = sum2 + a[i+1];
     }
     for (;i < ARR_SIZE;++i) {
-        sum += a[i];
+        sum2 += a[i];
     }
-    return sum + (sum2 + (sum3 + sum4));
+    return sum + sum2;
 }
 
 int main() {

@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <sys/types.h>
 
 const long MAX_FORKS = 4;
 const long MIN_FORKS = 1;
@@ -19,6 +20,18 @@ const long MIN_FORKS = 1;
 pid_t* children = NULL;
 long numForks;
 long childSignals = 0;
+
+/* Function Declarations */
+void printHelp(char** argv);
+void handleParentUSR1(int sig);
+void handleChildUSR1(int sig);
+void handleParentTERM(int sig);
+void parent();
+void parseArgs(int argc, char** argv);
+void forkProcesses();
+void waitForChildren();
+int child();
+/*************************/
 
 /**
  * Prints program help
@@ -117,6 +130,9 @@ void parent() {
     signal(SIGTERM, handleParentTERM);
 }
 
+/**
+ * Parses command line arguments to set global numForks variable.
+ */
 void parseArgs(int argc, char** argv) {
     char* tailPtr;
     long forks;
@@ -145,7 +161,7 @@ void parseArgs(int argc, char** argv) {
 void forkProcesses() {
     pid_t pid;
 
-    printf("PARENT: process id is %d\n", getpid());
+    printf("\nPARENT: process id is %d\n", getpid());
     printf("PARENT: Forking %ld times.\n", numForks);
     fflush(stdout);
     for(size_t i = 0; i < numForks; ++i) {

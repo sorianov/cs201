@@ -34,18 +34,9 @@ void doubleVals(int a[][SIZE]) {
 }
 
 void initialize(int a[][SIZE]) {
-	for(int y=0; y<SIZE; y++) {
-		for(int x=0; x<SIZE; x+=10) {
+	for(int x=0; x<SIZE; x++) {
+		for(int y=0; y<SIZE; y++) {
 			a[x][y] = x-y;	
-			a[x+1][y] = (x+1)-y;	
-			a[x+2][y] = (x+2)-y;	
-			a[x+3][y] = (x+3)-y;	
-			a[x+4][y] = (x+4)-y;	
-			a[x+5][y] = (x+5)-y;	
-			a[x+6][y] = (x+6)-y;	
-			a[x+7][y] = (x+7)-y;	
-			a[x+8][y] = (x+8)-y;	
-			a[x+9][y] = (x+9)-y;	
         }
     }
 }

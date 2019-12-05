@@ -47,7 +47,30 @@ int removeName(node** head, char* name) {
         current = current->next;
     }
     
-    if (current->next == NULL) {
+    if (previous == current) {
+        // head needs to be removed
+        if (current->next) {
+            // there's at least one other node besides the head
+            printf("excuse me\n");
+            previous = current;
+            current = current->next;
+            previous->next = NULL;
+            free(previous->data);
+            free(previous);
+            previous = NULL;
+            *head = current;
+
+            return 1;
+        } else {
+            // only the head remains and it should be removed
+            free(current->data);
+            free(current);
+            current = NULL;
+            *head = NULL;
+
+            return 1;
+        }
+    } else if (current->next == NULL) {
         // we're at the end of the list
         previous->next = NULL;
         free(current->data);
@@ -59,13 +82,17 @@ int removeName(node** head, char* name) {
         free(current);
     }
 
-    //TODO everything else
-
     return 1;
 }
 
 void printList(node** head) {
     node* current = *head;
+
+    if (current == NULL) {
+        // nothing to print
+        return;
+    }
+
     while(current != NULL) {
         printf("%s ", current->data);
         current = current->next;

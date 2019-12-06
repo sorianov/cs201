@@ -3,6 +3,13 @@
 #include <string.h>
 #include "stringlist.h"
 
+/**
+ * Creates a new node for a linked list.
+ *
+ * Input:
+ * node** newNode - Pointer to a node that we will overwrite
+ * char* name - Data to store in the node
+ */
 void createNode(node** newNode, char* name) {
     char* string = NULL;
     node* temp = NULL;
@@ -15,6 +22,17 @@ void createNode(node** newNode, char* name) {
     *newNode = temp;
 }
 
+/**
+ * Adds a name to a linked list.
+ *
+ * Input:
+ * node** head - Pointer to the first node in list
+ * char* name - Data to add
+ *
+ * Return:
+ * int 1 - Successful addition
+ * int 0 - Failure
+ */
 int addName(node** head, char* name) {
     node* temp = NULL;
     node* current = NULL;
@@ -34,6 +52,17 @@ int addName(node** head, char* name) {
     return 0;
 }
 
+/**
+ * Removes a node from a linked list based on name.
+ *
+ * Input:
+ * node** head - Pointer to the first node in list
+ * char* name - Data that should be removed
+ *
+ * Return:
+ * int 1 - Successful removal
+ * int 0 - Removal failure
+ */
 int removeName(node** head, char* name) {
     node* current = *head;
     node* previous = current;
@@ -76,16 +105,24 @@ int removeName(node** head, char* name) {
         previous->next = NULL;
         free(current->data);
         free(current);
+        return 1;
     } else {
         // in the middle of two nodes
         previous->next = current->next;
         free(current->data);
         free(current);
+        return 1;
     }
 
-    return 1;
+    return 0;
 }
 
+/**
+ * Prints the data of each node in a linked list.
+ *
+ * Output:
+ * Data of each node space delimited.
+ */
 void printList(node** head) {
     node* current = *head;
 
@@ -100,6 +137,11 @@ void printList(node** head) {
     }
 }
 
+/**
+ * Frees a linked list.
+ *
+ * Will free the data of each node and the node itself.
+ */
 void deleteList(node** head) {
     node* current = *head;
     node* next = NULL;

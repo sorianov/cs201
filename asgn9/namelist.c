@@ -57,13 +57,20 @@ void processName(node** llhead, char* argName) {
         printf("List: ");
         printList(llhead);
     } else {
-        printf("Action not supported. Exiting\n");
-        exit(1);
+        printf("Action '%c' not supported.\n", argName[0]);
     }
     printf("\n");
     free(name);
 }
 
+/**
+ * Processes commandline arguments
+ *
+ * Input:
+ * int argc - Number of arguments.
+ * char* argb[] - Values of arguments.
+ * node** llhead - Head node of linked list.
+ */
 void processArgs(int argc, char* argv[], node** llhead) {
     for (size_t i = 1; i < argc; ++i) {
         processName(llhead, argv[i]);

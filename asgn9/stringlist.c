@@ -4,9 +4,9 @@
 #include "stringlist.h"
 
 void createNode(node** newNode, char* name) {
-    char* string;
+    char* string = NULL;
     node* temp = NULL;
-    
+
     temp = (node*) malloc(sizeof(node));
     string = (char*) malloc(sizeof(char) * (strlen(name) + 1));
     strcpy(string, name);
@@ -19,7 +19,8 @@ int addName(node** head, char* name) {
     node* temp = NULL;
     node* current = NULL;
     createNode(&temp, name); // store new node in temp
-    if (*head == NULL) { // empty list
+    if (*head == NULL) {
+        // empty list
         *head = temp;
         return 1;
     } else {
@@ -35,23 +36,23 @@ int addName(node** head, char* name) {
 
 int removeName(node** head, char* name) {
     node* current = *head;
-    node* previous = current; 
-    
+    node* previous = current;
+
     //traverse list until we reach desired node
     while(strcmp(current->data, name)) {
         previous = current;
         if (current->next == NULL) {
             // these aren't the droids you're looking for
+            // AKA couldn't find name
             return 0;
         }
         current = current->next;
     }
-    
+
     if (previous == current) {
         // head needs to be removed
         if (current->next) {
             // there's at least one other node besides the head
-            printf("excuse me\n");
             previous = current;
             current = current->next;
             previous->next = NULL;
@@ -97,5 +98,32 @@ void printList(node** head) {
         printf("%s ", current->data);
         current = current->next;
     }
-    printf("\n");
+}
+
+void deleteList(node** head) {
+    node* current = *head;
+    node* next = NULL;
+
+    if (current == NULL) {
+        // empty list, or pointer has been lost X_X
+        return;
+    }
+
+    while (current->next) {
+        next = current->next;
+        removeName(&current, current->data);
+        current = next;
+    }
+
+    // remove remaining node
+    if (next) {
+        removeName(&next, next->data);
+    }
+
+    // Only head exists
+    if (current) {
+        removeName(&current, current->data);
+    }
+
+    *head = NULL;
 }

@@ -10,5 +10,6 @@ int addName(node**, char*);
 int removeName(node**, char*);
 void createNode(node**, char*);
 void printList(node**);
+void deleteList(node**);
 
 #endif

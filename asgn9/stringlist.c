@@ -36,20 +36,43 @@ void createNode(node** newNode, char* name) {
 int addName(node** head, char* name) {
     node* temp = NULL;
     node* current = NULL;
+    node* tail = NULL;
+    int cmp;
     createNode(&temp, name); // store new node in temp
     if (*head == NULL) {
         // empty list
         *head = temp;
         return 1;
-    } else {
-        current = *head;
-        while (current->next != NULL) {
-            current = current->next;
-        }
-        current->next = temp;
-        return 1;
     }
-    return 0;
+
+    current = *head;
+    cmp = strcmp(name, current->data);
+    if (cmp < 0) {
+        current = *head;
+        temp->next = current;
+        *head = temp;
+        return 1;
+    } else {
+        tail = current;
+        while (cmp > 0 && current->next) {
+            tail = current;
+            current = current->next;
+            cmp = strcmp(name, current->data);
+        }
+
+        if (cmp > 0) {
+            current->next = temp;
+            return 1;
+        }
+
+        if (cmp < 0) {
+           tail->next = temp;
+           temp->next = current;
+           return 1;
+        }
+
+        return 0;
+    }
 }
 
 /**
@@ -151,6 +174,11 @@ void deleteList(node** head) {
         return;
     }
 
+    // Only head exists
+    if (current->next == NULL) {
+        removeName(&current, current->data);
+    }
+
     while (current->next) {
         next = current->next;
         removeName(&current, current->data);
@@ -160,11 +188,6 @@ void deleteList(node** head) {
     // remove remaining node
     if (next) {
         removeName(&next, next->data);
-    }
-
-    // Only head exists
-    if (current) {
-        removeName(&current, current->data);
     }
 
     *head = NULL;
